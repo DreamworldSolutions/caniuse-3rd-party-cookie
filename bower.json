@@ -1,0 +1,21 @@
+{
+  "name": "caniuse-3rd-party-cookie",
+  "main": [
+    "caniuse-3rd-party-cookie.js"
+  ],
+  "homepage": "https://github.com/caniuse-3rd-party-cookie/",
+  "authors": [
+    "Chandresh Kikani <chandresh.kikani@dreamworldsolutions.com>"
+  ],
+  "description": ".",
+  "keywords": [
+    "web-components"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
