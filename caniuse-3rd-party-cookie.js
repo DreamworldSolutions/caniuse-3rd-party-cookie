@@ -42,7 +42,7 @@
   };
   
   function resolveRejectPromise() {
-    if(bThirdPatyCookieEnabled === undefined) {
+    if(bThirdPatyCookieEnabled === undefined || !oResolvePromise || !oRejectPromise) {
       return;
     }
     
@@ -66,7 +66,6 @@
    * Otherwise promise rejected.
    */
   window.onmessage = function(e){
-    console.log(e);
     if(e.source !== iframe.contentWindow) {
       return;
     }
