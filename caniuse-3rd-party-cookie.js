@@ -54,19 +54,13 @@
     oRejectPromise();
   };
   
-  if(document.readyState == "complete") {
-    createIframe();
-  }else {
-    window.onload = createIframe;
-  }
-  
   /**
    * Remove `iframe` element.
    * When `e.data.cookieEnabled` is defined then, promise resolved
    * Otherwise promise rejected.
    */
   window.onmessage = function(e){
-    if(e.source !== iframe.contentWindow) {
+    if(!iframe || e.source !== iframe.contentWindow) {
       return;
     }
     
@@ -89,6 +83,8 @@
       resolveRejectPromise();
       return oPromise;
     }
+    
+    createIframe();
     
     oPromise = new Promise(function(resolve, reject) {
       //Save `resolve` and `reject` in local variable
