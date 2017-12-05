@@ -1,10 +1,14 @@
 (function(window) {
   /**
    * Detect whether third-party-cookie is enabled in browser or not and return promise.
+   * Pass page url which listen on 'message' event on window and check 'third-party-cookie-test'
+   * cookie is set or not and post message with {cookieEnabled: Boolean} data on window
    * Example: 
-   *  - dw.canIUse3rdPartyCookie().then(fnCallback);
+   *  - dw.canIUse3rdPartyCookie(url).then(fnCallback);
    */
   window.dw = window.dw || {};
+  var s3rdPartyCookieUrl = '';
+  var sOrigin = '';
   var bThirdPatyCookieEnabled;
   var oPromise;
   var oResolvePromise;
@@ -17,7 +21,7 @@
    */
   function createIframe() {
     iframe = document.createElement('iframe');
-    iframe.setAttribute('src', 'https://caniuse.dreamworld.solutions/3rd-party-cookie.html');
+    iframe.setAttribute('src', s3rdPartyCookieUrl);
     iframe.setAttribute('id', 'iframe');
     iframe.style.position = 'absolute';
     iframe.style.top = -5000 + 'px';
@@ -38,7 +42,7 @@
       bThirdPatyCookieEnabled = false;
       resolveRejectPromise();
     }, 1000);
-    iframe.contentWindow.postMessage('third party cookie is enabled or not', 'https://caniuse.dreamworld.solutions');
+    iframe.contentWindow.postMessage('third party cookie is enabled or not', sOrigin);
   };
   
   function resolveRejectPromise() {
@@ -78,12 +82,20 @@
   /**
    * Return promise object which is resolve if third party cookie is enabled otherwise reject it.
    */
-  window.dw.canIUse3rdPartyCookie = function(){
+  window.dw.canIUse3rdPartyCookie = function(url) {
+    if(!url) {
+      throw new Error('Third party cookie check page url is missing');
+    }
     if(oPromise) {
       resolveRejectPromise();
       return oPromise;
     }
     
+    if(url) {
+      s3rdPartyCookieUrl = url;
+      var oUrlData = new URL(url);
+      sOrigin = oUrlData.protocol + '//' + oUrlData.hostname;
+    }
     createIframe();
     
     oPromise = new Promise(function(resolve, reject) {
