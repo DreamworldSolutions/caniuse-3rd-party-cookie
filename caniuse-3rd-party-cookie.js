@@ -1,10 +1,13 @@
 (function(window) {
   /**
    * Detect whether third-party-cookie is enabled in browser or not and return promise.
-   * Pass page url which listen on 'message' event on window and check 'third-party-cookie-test'
+   * Pass custom hosting page url which listen on 'message' event on window and check 'third-party-cookie-test'
    * cookie is set or not and post message with {cookieEnabled: Boolean} data on window
+   * e.g. 3rd-party-cookie.html page
+   * 
    * Example: 
    *  - dw.canIUse3rdPartyCookie(url).then(fnCallback);
+   *  - Where `url` is optional.
    */
   window.dw = window.dw || {};
   var s3rdPartyCookieUrl = '';
@@ -81,21 +84,27 @@
 
   /**
    * Return promise object which is resolve if third party cookie is enabled otherwise reject it.
+   * @param url - Custom hosting of page which is being opened in iframe on user-defined domain.
+   * If `url` is not defined then use default custom hosting page url
    */
   window.dw.canIUse3rdPartyCookie = function(url) {
-    if(!url) {
-      throw new Error('Third party cookie check page url is missing');
-    }
     if(oPromise) {
       resolveRejectPromise();
       return oPromise;
     }
     
-    if(url) {
-      s3rdPartyCookieUrl = url;
-      var oUrlData = new URL(url);
-      sOrigin = oUrlData.protocol + '//' + oUrlData.hostname;
+    //Use default hosting page url if url is not defined
+    if(!url) {
+      url = 'https://caniuse.dreamworld.solutions/3rd-party-cookie.html';
     }
+    
+    //Custom hosting page url and its origin
+    s3rdPartyCookieUrl = url;
+    
+    //Custom hosting page url's origin domain
+    var oUrlData = new URL(url);
+    sOrigin = oUrlData.protocol + '//' + oUrlData.hostname;
+    
     createIframe();
     
     oPromise = new Promise(function(resolve, reject) {
