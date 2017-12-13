@@ -1,0 +1,15 @@
+{
+    "name": "caniuse-3rd-party-cookie",
+    "version": "1.0.0",
+    "description": "A JS library to detect whether 3rd party cookie is enabled in the browser or not.",
+    "main": "caniuse-3rd-party-cookie.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "cookie",
+        "dreamworld solutions"
+    ],
+    "author": "Dreamworld Solutions",
+    "license": "ISC"
+}
