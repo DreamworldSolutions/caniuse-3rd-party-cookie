@@ -105,7 +105,13 @@
     var oUrlData = new URL(url);
     sOrigin = oUrlData.protocol + '//' + oUrlData.hostname;
     
-    createIframe();
+    if (document.readyState == "complete") {
+      createIframe();
+    } else {
+      window.addEventListener("load", function (event) {
+        createIframe();
+      });
+    }
     
     oPromise = new Promise(function(resolve, reject) {
       //Save `resolve` and `reject` in local variable
